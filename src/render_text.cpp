@@ -281,9 +281,9 @@ static void print_tree(const Certificate_with_links &cert, IndentationContext in
     if (minimal) printf("%s", to_minimal_node(cert, indentation_ctx).c_str());
     else printf("%s", to_rich_node(cert, indentation_ctx).c_str());
 
-    std::list<Certificate_with_links*>::const_iterator child;
+    std::set<Certificate_with_links*>::const_iterator child;
     for (child=cert.children.begin(); child!=cert.children.end(); child++) {
-        std::list<Certificate_with_links*>::const_iterator next_child = child;
+        std::set<Certificate_with_links*>::const_iterator next_child = child;
         next_child++;
         IndentationContext indentation_ctx_child = indentation_ctx;
         if (next_child== cert.children.end()) {
@@ -299,7 +299,7 @@ static void print_tree(const Certificate_with_links &cert, IndentationContext in
 /**
  * @brief Print a hierarchical tree of certificates
  *
- * For each certificate that has not parent, print its descendance.
+ * For each certificate that has no parent, print its descendance.
  * It is assumed that:
  * - there is at least a certifictae that has no parent
  *   (circular dependencies have been broken)
@@ -307,6 +307,7 @@ static void print_tree(const Certificate_with_links &cert, IndentationContext in
  */
 void print_tree(const std::vector<Certificate_with_links> &certificates, bool minimal)
 {
+    LOGINFO("Printing tree...");
     std::vector<Certificate_with_links>::const_iterator cert;
     IndentationContext indentation_ctx;
     for (cert=certificates.begin(); cert!=certificates.end(); cert++) {
@@ -315,7 +316,6 @@ void print_tree(const std::vector<Certificate_with_links> &certificates, bool mi
         }
     }
 }
-
 
 static void print_property(const std::string &prefix, const char *name, const std::string &value)
 {

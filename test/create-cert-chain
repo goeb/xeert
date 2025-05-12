@@ -146,6 +146,59 @@ create_invalid_chain_2() {
 	cd -
 }
 
+create_circular_chain_3() {
+	# Create circular chain root -> A -> B -> root
+	DIR=set03
+	mkdir -p $DIR
+	cd $DIR
+
+	CA=root
+	create_private_key $CA.key
+	create_selfsigned_cert $CA.key $CA.crt "/CN=$CA/"
+
+	CA=a-111
+	create_private_key $CA.key
+	create_csr $CA.key $CA.csr "/CN=$CA/"
+	issue_certificate root.crt root.key $CA.csr $CA.crt
+
+	CA=b-222
+	# reuse root.key
+	create_csr root.key $CA.csr "/CN=root/"
+	issue_certificate a-111.crt a-111.key $CA.csr $CA.crt
+
+	rm *csr *key
+	cd -
+}
+
+create_circular_chain_4() {
+	# Create circular chain root -> A -> B -> C -> A
+	DIR=set04
+	mkdir -p $DIR
+	cd $DIR
+
+	CA=root
+	create_private_key $CA.key
+	create_selfsigned_cert $CA.key $CA.crt "/CN=$CA/"
+
+	CA=a-111
+	create_private_key $CA.key
+	create_csr $CA.key $CA.csr "/CN=$CA/"
+	issue_certificate root.crt root.key $CA.csr $CA.crt
+
+	CA=b-222
+	create_private_key $CA.key
+	create_csr $CA.key $CA.csr "/CN=$CA/"
+	issue_certificate a-111.crt a-111.key $CA.csr $CA.crt
+
+	CA=c-333
+	# reuse root.key
+	create_csr root.key $CA.csr "/CN=root/"
+	issue_certificate b-222.crt b-222.key $CA.csr $CA.crt
+
+	rm *csr *key
+	cd -
+}
+
 # main
 
 if [ $(date +%Y) != 2022 ]; then
@@ -156,5 +209,7 @@ if [ $(date +%Y) != 2022 ]; then
 	exit $?
 fi
 
-create_nominal_chain_1
-create_invalid_chain_2
+#create_nominal_chain_1
+#create_invalid_chain_2
+create_circular_chain_3
+create_circular_chain_4

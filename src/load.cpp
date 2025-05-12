@@ -113,10 +113,12 @@ static int load_cert_file(std::istream &input, const char *filename, std::vector
         }
         OctetString der_bytes;
         if (c == '-') {
+            LOGINFO("Loading %s:%lu as PEM", filename, index);
             der_bytes = get_pem_cert(input);
-        }
-        else if (c == 0x30) der_bytes = get_der_sequence(input);
-        else {
+        } else if (c == 0x30) {
+            LOGINFO("Loading %s:%lu as DER", filename, index);
+            der_bytes = get_der_sequence(input);
+        } else {
             LOGERROR("Unknown certificate format: %s:%lu", filename, index);
             return -1;
         }
