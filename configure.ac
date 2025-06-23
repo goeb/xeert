@@ -2,7 +2,7 @@ AC_PREREQ([2.63])
 AC_INIT(xfon, 1.0.0)
 AC_CONFIG_HEADERS([src/config.h])
 AC_CANONICAL_TARGET
-AM_INIT_AUTOMAKE([-Wall -Werror subdir-objects])
+AM_INIT_AUTOMAKE([-Wall -Werror subdir-objects foreign])
 AM_SILENT_RULES([yes])
 
 # Checks for programs.
