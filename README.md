@@ -1,5 +1,17 @@
 # Xfon, a X509 certificate analysis tool
 
+Features:
+- print trees of x509 certificates
+- show fields of x509 certificates
+- do not use system-wide certificates (unless explicitely told)
+- detect signature errors
+- detect duplicates
+- detect and break circular dependencies
+
+Relies on:
+- openssl for verification of signatures
+
+
 ## Print a tree of certificates
 
 Example:
