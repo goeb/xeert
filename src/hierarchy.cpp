@@ -67,7 +67,7 @@ static bool is_issuer(const Certificate_with_links &cert_issuer, const Certifica
     return true;
 }
 
-static bool is_self_signed(const Certificate_with_links &cert)
+bool is_self_signed(const Certificate_with_links &cert)
 {
     return is_issuer(cert, cert);
 }

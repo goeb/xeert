@@ -221,6 +221,7 @@ static std::string to_rich_node(const Certificate_with_links &cert, const Indent
         indent_last_line    = "└─";
     }
     result += indent_first_line + to_string(cert.tbs_certificate.subject) + "\n";
+    if (is_self_signed(cert)) result += indent_second_lines + "self-signed\n";
     result += indent_second_lines + cert.tbs_certificate.validity.not_before + " .. " + cert.tbs_certificate.validity.not_after + "\n";
     result += indent_second_lines + cert.get_file_location() + "\n";
     if (!cert.children.empty()) {

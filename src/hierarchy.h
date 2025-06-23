@@ -14,6 +14,7 @@ struct Certificate_with_links : public Certificate {
     std::string get_file_location() const;
 };
 
+bool is_self_signed(const Certificate_with_links &cert);
 void compute_hierarchy(std::vector<Certificate_with_links> &certificates);
 
 #endif
